@@ -27,3 +27,23 @@ function onOpen(e) {
       .addItem('Hide progress bar', 'deleteBars')
       .addToUi();
 }
+
+/**
+ * Create a rectangle on every slide with different bar widths.
+ */
+function createBars() {
+  deleteBars(); // Delete any existing progress bars
+  var slides = presentation.getSlides();
+  for (var i = 0; i < slides.length; ++i) {
+    var ratioComplete = (i / (slides.length - 1));
+    var x = 0;
+    var y = presentation.getPageHeight() - BAR_HEIGHT;
+    var barWidth = presentation.getPageWidth() * ratioComplete;
+    if (barWidth > 0) {
+      var bar = slides[i].insertShape(SlidesApp.ShapeType.RECTANGLE, x, y,
+                                      barWidth, BAR_HEIGHT);
+      bar.getBorder().setTransparent();
+      bar.setLinkUrl(BAR_ID);
+    }
+  }
+}
